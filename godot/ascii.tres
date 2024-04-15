@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://b31e5ug40k7ge"]
+
+[ext_resource type="FontFile" uid="uid://15qce5uh2563" path="res://COUR.TTF" id="1_ko71d"]
+
+[sub_resource type="FontVariation" id="FontVariation_aj8xi"]
+base_font = ExtResource("1_ko71d")
+spacing_top = -15
+spacing_bottom = -5
+
+[resource]
+default_font = ExtResource("1_ko71d")
+default_font_size = 40
+/fonts/dryy = SubResource("FontVariation_aj8xi")
