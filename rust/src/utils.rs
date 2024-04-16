@@ -1,4 +1,4 @@
-use godot::engine::Image;
+use godot::engine::{Font, Image, Label};
 use godot::prelude::*;
 
 #[derive(GodotClass)]
@@ -35,5 +35,26 @@ impl Utils {
     pub fn to_gray(c: Color) -> Color {
         let gray = (c.r + c.g + c.b) / 3.0;
         Color::from_hsv(0.0, 0.0, gray as f64)
+    }
+
+    pub fn split_image(image: Gd<Image>, chunk_size: &Vector2) -> Vec<Vec<Gd<Image>>> {
+        let mut arr = Vec::new();
+        for x in (0..image.get_width()).step_by(chunk_size.x as usize) {
+            let mut row = Vec::new();
+            for y in (0..image.get_height()).step_by(chunk_size.y as usize) {
+                let region = image.get_region(Rect2i::from_components(
+                    x,
+                    y,
+                    chunk_size.x as i32,
+                    chunk_size.y as i32,
+                ));
+
+                if let Some(img) = region {
+                    row.push(img);
+                }
+            }
+            arr.push(row);
+        }
+        arr
     }
 }

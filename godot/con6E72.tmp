@@ -1,54 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://c7e27hha2myfw"]
 
+[ext_resource type="Script" path="res://control.gd" id="1_vuxmj"]
 [ext_resource type="Texture2D" uid="uid://b5u5f0lj35s46" path="res://icon.svg" id="2_drt41"]
 [ext_resource type="Script" path="res://ImageRect.gd" id="3_01yn5"]
 [ext_resource type="Theme" uid="uid://b31e5ug40k7ge" path="res://ascii.tres" id="3_7xex6"]
-[ext_resource type="Script" path="res://TextureRect.gd" id="4_35vxd"]
 [ext_resource type="Script" path="res://FontSize.gd" id="4_k783v"]
 [ext_resource type="Script" path="res://Ascii.gd" id="4_rr33x"]
-
-[sub_resource type="GDScript" id="GDScript_hh2cl"]
-script/source = "extends Control
-
-func _ready():
-	get_tree().get_root().files_dropped.connect(_on_files_dropped)
-	_load_image(\"res://icon.svg\")
-
-func _on_load_image_button_down():
-	$UI/FileDialog.popup()
-	
-
-func _on_file_dialog_file_selected(path):
-	_load_image(path)
-
-func _on_files_dropped(files):
-	var path = files[0]	
-	_load_image(path)
-	
-func _load_image(path):
-	var image = Image.new()
-	image.load(path)
-	
-	$UI/AsciiButton.set_pressed(false)
-	Utils.fit_image_to_size(image, $ColorRect.get_rect().size.x, $ColorRect.get_rect().size.y);
-	$ColorRect/ImageRect.set_image(image)
-
-#func _on_ascii_button_toggled(toggled_on):
-	#if (toggled_on):
-		#$ColorRect/ImageRect.convert_to_ascii()
-	#else:
-		#$ColorRect/ImageRect.reset_texture()
-		
-
-
-func set_font(font: Font, font_size: int):
-	$ColorRect/ImageRect.set_font(font, font_size)
-
-func _on_slider_value_changed(value):
-	set_font(preload(\"res://COUR.TTF\"), value)
-"
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_qlxyf"]
+[ext_resource type="Script" path="res://CharViewport.gd" id="5_r3npx"]
+[ext_resource type="Script" path="res://draw.gd" id="6_oakpp"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -59,7 +18,7 @@ offset_right = -352.0
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
-script = SubResource("GDScript_hh2cl")
+script = ExtResource("1_vuxmj")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 0
@@ -81,32 +40,16 @@ offset_right = -382.0
 offset_bottom = -299.0
 script = ExtResource("4_rr33x")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="ColorRect/ImageRect/Ascii"]
-layout_mode = 0
-offset_left = 187.0
-offset_top = 100.0
-offset_right = 790.0
-offset_bottom = 576.0
-stretch = true
-
-[node name="CharViewport" type="SubViewport" parent="ColorRect/ImageRect/Ascii/SubViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(603, 476)
+[node name="CharViewport" type="SubViewport" parent="ColorRect/ImageRect/Ascii"]
 render_target_update_mode = 4
+script = ExtResource("5_r3npx")
 
-[node name="Draw" type="Draw" parent="ColorRect/ImageRect/Ascii/SubViewportContainer/CharViewport"]
+[node name="Control" type="Control" parent="ColorRect/ImageRect/Ascii/CharViewport"]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="TextureRect" type="TextureRect" parent="ColorRect/ImageRect/Ascii"]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 286.0
-offset_right = 471.0
-offset_bottom = 557.0
-texture = SubResource("CanvasTexture_qlxyf")
-script = ExtResource("4_35vxd")
+script = ExtResource("6_oakpp")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
 layout_mode = 0
@@ -122,25 +65,23 @@ selection_enabled = true
 
 [node name="UI" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 844.0
-offset_top = 8.0
-offset_right = 884.0
-offset_bottom = 48.0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI"]
 layout_mode = 0
-offset_left = 32.0
-offset_top = 50.0
-offset_right = 352.0
-offset_bottom = 179.0
+offset_left = 876.0
+offset_top = 58.0
+offset_right = 1196.0
+offset_bottom = 187.0
 text = "Or Drag an Image Into the Window"
 
 [node name="LoadImage" type="Button" parent="UI"]
 layout_mode = 0
-offset_left = 39.0
-offset_top = -1.0
-offset_right = 292.0
-offset_bottom = 42.0
+offset_left = 883.0
+offset_top = 7.0
+offset_right = 1136.0
+offset_bottom = 50.0
 text = "Load an Image From FileSystem"
 
 [node name="FileDialog" type="FileDialog" parent="UI"]
@@ -155,18 +96,18 @@ use_native_dialog = true
 
 [node name="AsciiButton" type="CheckButton" parent="UI"]
 layout_mode = 0
-offset_left = 90.0
-offset_top = 559.0
-offset_right = 259.0
-offset_bottom = 590.0
+offset_left = 934.0
+offset_top = 567.0
+offset_right = 1103.0
+offset_bottom = 598.0
 text = "Convert to Ascii"
 
 [node name="FontSize" type="Control" parent="UI"]
 anchors_preset = 0
-offset_left = 49.0
-offset_top = 201.0
-offset_right = 89.0
-offset_bottom = 241.0
+offset_left = 893.0
+offset_top = 209.0
+offset_right = 933.0
+offset_bottom = 249.0
 script = ExtResource("4_k783v")
 
 [node name="Label" type="Label" parent="UI/FontSize"]
@@ -196,9 +137,19 @@ offset_right = 127.0
 offset_bottom = 52.0
 text = "10"
 
+[node name="Font" type="Control" parent="UI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "test"
+
 [connection signal="button_down" from="UI/LoadImage" to="." method="_on_load_image_button_down"]
 [connection signal="file_selected" from="UI/FileDialog" to="." method="_on_file_dialog_file_selected"]
-[connection signal="pressed" from="UI/AsciiButton" to="ColorRect/ImageRect/Ascii" method="_on_ascii_button_pressed"]
 [connection signal="toggled" from="UI/AsciiButton" to="." method="_on_ascii_button_toggled"]
 [connection signal="value_changed" from="UI/FontSize/Slider" to="." method="_on_slider_value_changed"]
 [connection signal="value_changed" from="UI/FontSize/Slider" to="UI/FontSize" method="_on_slider_value_changed"]
