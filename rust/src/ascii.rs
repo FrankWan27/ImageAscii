@@ -1,10 +1,14 @@
-use godot::engine::{viewport, Font, ILabel, Image, ImageTexture, Label, SubViewport};
+use godot::engine::control::GrowDirection;
+use godot::engine::{
+    viewport, Font, ILabel, Image, ImageTexture, Label, SubViewport, SubViewportContainer,
+};
 use godot::prelude::*;
 
 use crate::draw::Draw;
 
-const LOWEST_ASCII: char = ' ';
-const HIGHEST_ASCII: char = '~';
+pub const LOWEST_ASCII: char = ' ';
+pub const HIGHEST_ASCII: char = '~';
+pub const NUM_ASCII: usize = 95;
 
 #[derive(GodotClass)]
 #[class(base=Label)]
@@ -12,6 +16,7 @@ pub(crate) struct Ascii {
     char_size: Vector2,
     draw: Option<Gd<Draw>>,
     viewport: Option<Gd<SubViewport>>,
+    viewport_container: Option<Gd<SubViewportContainer>>,
     base: Base<Label>,
 }
 
@@ -23,6 +28,7 @@ impl ILabel for Ascii {
             char_size: Vector2::default(),
             draw: None,
             viewport: None,
+            viewport_container: None,
         }
     }
 }
@@ -30,19 +36,41 @@ impl ILabel for Ascii {
 #[godot_api]
 impl Ascii {
     #[func]
-    pub fn initialize(&mut self, draw: Gd<Draw>, viewport: Gd<SubViewport>) {
+    pub fn initialize(
+        &mut self,
+        draw: Gd<Draw>,
+        viewport: Gd<SubViewport>,
+        mut viewport_container: Gd<SubViewportContainer>,
+    ) {
         self.draw = Some(draw);
         self.viewport = Some(viewport);
+        self.viewport_container = Some(viewport_container);
     }
 
     #[func]
     pub fn set_font(&mut self, font: Gd<Font>, font_size: i32) {
-        self.base_mut().add_theme_font_override("font".into(), font);
+        self.base_mut()
+            .add_theme_font_override("font".into(), font.clone());
         self.base_mut()
             .add_theme_font_size_override("font_size".into(), font_size);
 
-        self.char_size = self.measure_char_size();
-        godot_print!("char size {}", self.char_size);
+        let char_size = self.measure_char_size();
+        self.char_size = char_size.clone();
+        self.draw
+            .as_mut()
+            .unwrap()
+            .bind_mut()
+            .set_font(font, font_size, char_size);
+        godot_print!("changing viewport size {}", self.char_size);
+
+        self.viewport_container
+            .as_mut()
+            .unwrap()
+            .set_size(Vector2::new(char_size.x * NUM_ASCII as f32, char_size.y));
+        self.viewport_container
+            .as_mut()
+            .unwrap()
+            .set_position(Vector2::new(100.0, 100.0));
         self.populate_cache();
     }
 

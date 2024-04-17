@@ -3,7 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://b5u5f0lj35s46" path="res://icon.svg" id="2_drt41"]
 [ext_resource type="Script" path="res://ImageRect.gd" id="3_01yn5"]
 [ext_resource type="Theme" uid="uid://b31e5ug40k7ge" path="res://ascii.tres" id="3_7xex6"]
-[ext_resource type="Script" path="res://TextureRect.gd" id="4_35vxd"]
+[ext_resource type="Script" path="res://CharViewport.gd" id="4_4akip"]
+[ext_resource type="Script" path="res://Draw.gd" id="4_hrtqf"]
 [ext_resource type="Script" path="res://FontSize.gd" id="4_k783v"]
 [ext_resource type="Script" path="res://Ascii.gd" id="4_rr33x"]
 
@@ -48,8 +49,6 @@ func _on_slider_value_changed(value):
 	set_font(preload(\"res://COUR.TTF\"), value)
 "
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_qlxyf"]
-
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -79,34 +78,26 @@ offset_left = -422.0
 offset_top = -322.0
 offset_right = -382.0
 offset_bottom = -299.0
+vertical_alignment = 2
 script = ExtResource("4_rr33x")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="ColorRect/ImageRect/Ascii"]
 layout_mode = 0
-offset_left = 187.0
+offset_left = 100.0
 offset_top = 100.0
-offset_right = 790.0
-offset_bottom = 576.0
+offset_right = 500.0
+offset_bottom = 500.0
 stretch = true
 
 [node name="CharViewport" type="SubViewport" parent="ColorRect/ImageRect/Ascii/SubViewportContainer"]
-transparent_bg = true
 handle_input_locally = false
-size = Vector2i(603, 476)
+size = Vector2i(400, 400)
 render_target_update_mode = 4
+script = ExtResource("4_4akip")
 
 [node name="Draw" type="Draw" parent="ColorRect/ImageRect/Ascii/SubViewportContainer/CharViewport"]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TextureRect" type="TextureRect" parent="ColorRect/ImageRect/Ascii"]
-layout_mode = 0
-offset_left = 200.0
-offset_top = 286.0
-offset_right = 471.0
-offset_bottom = 557.0
-texture = SubResource("CanvasTexture_qlxyf")
-script = ExtResource("4_35vxd")
+script = ExtResource("4_hrtqf")
+metadata/_edit_use_anchors_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
 layout_mode = 0
