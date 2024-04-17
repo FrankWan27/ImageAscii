@@ -39,9 +39,9 @@ impl Utils {
 
     pub fn split_image(image: Gd<Image>, chunk_size: &Vector2) -> Vec<Vec<Gd<Image>>> {
         let mut arr = Vec::new();
-        for x in (0..image.get_width()).step_by(chunk_size.x as usize) {
+        for y in (0..image.get_width()).step_by(chunk_size.y as usize) {
             let mut row = Vec::new();
-            for y in (0..image.get_height()).step_by(chunk_size.y as usize) {
+            for x in (0..image.get_height()).step_by(chunk_size.y as usize) {
                 let region = image.get_region(Rect2i::from_components(
                     x,
                     y,

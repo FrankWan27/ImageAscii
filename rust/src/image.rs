@@ -1,7 +1,9 @@
+use godot::engine::global::HorizontalAlignment;
 use godot::engine::Font;
 use godot::engine::ISprite2D;
 use godot::engine::Image;
 use godot::engine::ImageTexture;
+use godot::engine::RichTextLabel;
 use godot::engine::Sprite2D;
 use godot::prelude::*;
 
@@ -14,6 +16,7 @@ struct ImageRect {
     base: Base<Sprite2D>,
     image: Gd<Image>,
     ascii: Option<Gd<Ascii>>,
+    text_label: Option<Gd<RichTextLabel>>,
 }
 
 #[godot_api]
@@ -23,6 +26,7 @@ impl ISprite2D for ImageRect {
             base,
             image: Image::new_gd(),
             ascii: None,
+            text_label: None,
         }
     }
 }
@@ -35,6 +39,11 @@ impl ImageRect {
     }
 
     #[func]
+    fn set_text_label(&mut self, label: Gd<RichTextLabel>) {
+        self.text_label = Some(label);
+    }
+
+    #[func]
     fn set_image(&mut self, image: Gd<Image>) {
         self.image = image;
         self.reset_texture();
@@ -42,6 +51,11 @@ impl ImageRect {
 
     #[func]
     fn set_font(&mut self, font: Gd<Font>, font_size: i32) {
+        let label = self.text_label.as_mut().unwrap();
+        label.clear();
+        label.push_color(Color::BLACK);
+        label.push_paragraph(HorizontalAlignment::CENTER);
+        label.push_font_ex(font.clone()).font_size(font_size).done();
         self.ascii
             .as_mut()
             .unwrap()
@@ -62,12 +76,21 @@ impl ImageRect {
 
     #[func]
     fn convert_to_ascii(&mut self) {
-        let tex = self.base_mut().get_texture().unwrap();
-        let image = tex.get_image().unwrap();
-        let gray = Utils::to_gray_scale(image);
-        // Utils::split_image(gray, &self.ascii.as_ref().unwrap().bind().get_char_size());
+        let image = self.base_mut().get_texture().unwrap().get_image().unwrap();
+        //let gray = Utils::to_gray_scale(image);
+        let chunks =
+            Utils::split_image(image, &self.ascii.as_ref().unwrap().bind().get_char_size());
+        let ascii_string = self
+            .ascii
+            .as_mut()
+            .unwrap()
+            .bind_mut()
+            .convert_chunks_to_ascii(&chunks);
 
-        // self.set_texture(gray);
+        let label = self.text_label.as_mut().unwrap();
+        label.append_text(ascii_string);
+        label.pop_all();
+        godot_print!("{}", label.get_text());
     }
 
     #[func]
