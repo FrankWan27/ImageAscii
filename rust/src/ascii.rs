@@ -5,6 +5,7 @@ use godot::engine::{
 use godot::prelude::*;
 
 use crate::draw::Draw;
+use crate::utils::Utils;
 
 pub const LOWEST_ASCII: char = ' ';
 pub const HIGHEST_ASCII: char = '~';
@@ -82,8 +83,7 @@ impl Ascii {
         self.viewport_container
             .as_mut()
             .unwrap()
-            .set_position(Vector2::new(100.0, 100.0));
-        self.populate_cache();
+            .set_position(Vector2::new(100.0, -100.0));
     }
 
     #[func]
@@ -118,7 +118,9 @@ impl Ascii {
         let mut winning_char = '?';
         let mut top_score = 0.0;
         for (i, c) in (LOWEST_ASCII..=HIGHEST_ASCII).enumerate() {
+            // for (i, c) in ('a'..='c').enumerate() {
             let char_img = &self.char_vec[i];
+            godot_print!("comparing with {}", c);
             let curr_score = Ascii::get_compare_score(chunk, char_img);
             if curr_score > top_score {
                 winning_char = c;
@@ -131,8 +133,11 @@ impl Ascii {
     fn get_compare_score(chunk: &Gd<Image>, char_img: &Gd<Image>) -> f32 {
         let size = chunk.get_size();
         let mut score = 0.0;
+
         for y in 0..size.y {
             for x in 0..size.x {
+                // Utils::print_pixel(format!(" {},{}chunk", x, y), &chunk.get_pixel(x, y));
+                // Utils::print_pixel(format!(" {},{} char", x, y), &char_img.get_pixel(x, y));
                 score += Ascii::compare_pixel(&chunk.get_pixel(x, y), &char_img.get_pixel(x, y));
             }
         }
@@ -144,13 +149,17 @@ impl Ascii {
     }
 
     fn color_magnitude(c: &Color) -> f32 {
-        (1.0 - (c.r + c.g + c.b) / 3.0) * c.a
+        let gray = (c.r + c.g + c.b) / 3.0;
+        let inverse = 1.0 - gray;
+        let alpha = inverse * c.a;
+        alpha
+        //(1.0 - (c.r + c.g + c.b) / 3.0) * c.a
     }
 
-    fn populate_cache(&mut self) {
+    pub fn populate_cache(&mut self) {
         for (i, c) in (LOWEST_ASCII..=HIGHEST_ASCII).enumerate() {
             let char_image = self.capture_viewport().get_region(Rect2i::from_components(
-                self.capture_viewport().get_width() / NUM_ASCII as i32 * i as i32,
+                self.get_char_size().x as i32 * i as i32,
                 0,
                 self.get_char_size().x as i32,
                 self.get_char_size().y as i32,
@@ -172,5 +181,34 @@ impl Ascii {
             .unwrap()
             .get_image()
             .unwrap()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_color_magnitude() {
+        assert_eq!(Ascii::color_magnitude(&Color::BLACK), 1.0);
+        assert_eq!(Ascii::color_magnitude(&Color::WHITE), 0.0);
+        assert_eq!(
+            Ascii::color_magnitude(&Color::from_rgba(0.0, 0.0, 0.0, 0.5)),
+            0.5
+        );
+    }
+
+    #[test]
+    fn test_compare_pixel() {
+        assert_eq!(Ascii::compare_pixel(&Color::BLACK, &Color::BLACK), 1.0);
+        assert_eq!(Ascii::compare_pixel(&Color::BLACK, &Color::WHITE), 0.0);
+        assert_eq!(
+            Ascii::compare_pixel(&Color::BLACK, &Color::from_rgba(0.0, 0.0, 0.0, 0.5)),
+            0.5
+        );
+        assert_eq!(
+            Ascii::compare_pixel(&Color::WHITE, &Color::from_rgba(0.0, 0.0, 0.0, 0.5)),
+            0.5
+        );
     }
 }

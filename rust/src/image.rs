@@ -76,10 +76,19 @@ impl ImageRect {
 
     #[func]
     fn convert_to_ascii(&mut self) {
+        self.ascii.as_mut().unwrap().bind_mut().populate_cache();
         let image = self.base_mut().get_texture().unwrap().get_image().unwrap();
         //let gray = Utils::to_gray_scale(image);
+        godot_print!("image size {}", image.get_size());
         let chunks =
             Utils::split_image(image, &self.ascii.as_ref().unwrap().bind().get_char_size());
+        godot_print!(
+            "split into {}x{} chunk size: {}",
+            chunks.len(),
+            chunks[0].len(),
+            chunks[0][0].get_size()
+        );
+
         let ascii_string = self
             .ascii
             .as_mut()
