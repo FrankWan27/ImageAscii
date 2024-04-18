@@ -13,6 +13,8 @@ For white text on a dark background, you can generate the Ascii with invert togg
 ![NkoPogInvert](https://github.com/FrankWan27/ImageAscii/blob/main/img/nkoPogInvert.png?raw=true)
 
 ## Build
+[Download the release and run (Windows only)](https://github.com/FrankWan27/ImageAscii/releases/)
+
 This project uses godot and godot-rust
 
 1. ```git clone https://github.com/FrankWan27/ImageAscii.git```
