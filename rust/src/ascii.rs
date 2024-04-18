@@ -15,6 +15,8 @@ pub(crate) struct Ascii {
     draw: Option<Gd<Draw>>,
     viewport: Option<Gd<SubViewport>>,
     viewport_container: Option<Gd<SubViewportContainer>>,
+    invert: bool,
+    skip_backtick: bool,
     char_vec: Vec<Gd<Image>>,
 }
 
@@ -27,6 +29,8 @@ impl ILabel for Ascii {
             draw: None,
             viewport: None,
             viewport_container: None,
+            invert: false,
+            skip_backtick: false,
             char_vec: vec![Image::new_gd(); NUM_ASCII],
         }
     }
@@ -46,6 +50,16 @@ impl Ascii {
         self.draw = Some(draw);
         self.viewport = Some(viewport);
         self.viewport_container = Some(viewport_container);
+    }
+
+    #[func]
+    pub fn set_invert(&mut self, invert: bool) {
+        self.invert = invert;
+    }
+
+    #[func]
+    pub fn set_skip_backtick(&mut self, skip: bool) {
+        self.skip_backtick = skip;
     }
 
     #[func]
@@ -102,11 +116,11 @@ impl Ascii {
         let mut winning_char = '?';
         let mut top_score = 0.0;
         for (i, c) in (LOWEST_ASCII..=HIGHEST_ASCII).enumerate() {
-            // if c == '`' {
-            //     continue;
-            // }
+            if c == '`' && self.skip_backtick {
+                continue;
+            }
             let char_img = &self.char_vec[i];
-            let curr_score = Ascii::get_compare_score(chunk, char_img);
+            let curr_score = self.get_compare_score(chunk, char_img);
             if curr_score > top_score {
                 winning_char = c;
                 top_score = curr_score;
@@ -115,22 +129,28 @@ impl Ascii {
         winning_char
     }
 
-    fn get_compare_score(chunk: &Gd<Image>, char_img: &Gd<Image>) -> f32 {
+    fn get_compare_score(&self, chunk: &Gd<Image>, char_img: &Gd<Image>) -> f32 {
         let size = chunk.get_size();
         let mut score = 0.0;
 
         for y in 0..size.y {
             for x in 0..size.x {
-                score += Ascii::compare_pixel(&chunk.get_pixel(x, y), &char_img.get_pixel(x, y));
+                score += Ascii::compare_pixel(
+                    &chunk.get_pixel(x, y),
+                    &char_img.get_pixel(x, y),
+                    self.invert,
+                );
             }
         }
         score
     }
 
-    fn compare_pixel(a: &Color, b: &Color) -> f32 {
-        1.0 - (Ascii::color_magnitude(a) - Ascii::color_magnitude(b)).abs()
-        //uncomment for inverse colors
-        //(Ascii::color_magnitude(a) - Ascii::color_magnitude(b)).abs()
+    fn compare_pixel(a: &Color, b: &Color, invert: bool) -> f32 {
+        if invert {
+            (Ascii::color_magnitude(a) - Ascii::color_magnitude(b)).abs()
+        } else {
+            1.0 - (Ascii::color_magnitude(a) - Ascii::color_magnitude(b)).abs()
+        }
     }
 
     fn color_magnitude(c: &Color) -> f32 {
@@ -180,14 +200,20 @@ mod tests {
 
     #[test]
     fn test_compare_pixel() {
-        assert_eq!(Ascii::compare_pixel(&Color::BLACK, &Color::BLACK), 1.0);
-        assert_eq!(Ascii::compare_pixel(&Color::BLACK, &Color::WHITE), 0.0);
         assert_eq!(
-            Ascii::compare_pixel(&Color::BLACK, &Color::from_rgba(0.0, 0.0, 0.0, 0.5)),
+            Ascii::compare_pixel(&Color::BLACK, &Color::BLACK, false),
+            1.0
+        );
+        assert_eq!(
+            Ascii::compare_pixel(&Color::BLACK, &Color::WHITE, false),
+            0.0
+        );
+        assert_eq!(
+            Ascii::compare_pixel(&Color::BLACK, &Color::from_rgba(0.0, 0.0, 0.0, 0.5), false),
             0.5
         );
         assert_eq!(
-            Ascii::compare_pixel(&Color::WHITE, &Color::from_rgba(0.0, 0.0, 0.0, 0.5)),
+            Ascii::compare_pixel(&Color::WHITE, &Color::from_rgba(0.0, 0.0, 0.0, 0.5), false),
             0.5
         );
     }
