@@ -1,5 +1,5 @@
 # Image Ascii
-Image to Ascii Converter 
+Image to Ascii Converter - this project was mainly to gain some familiarity with godot
 
 ## Table of Contents
 - [Examples](#examples)
