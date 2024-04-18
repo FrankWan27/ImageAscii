@@ -5,6 +5,7 @@ use godot::prelude::*;
 #[class(no_init)]
 pub(crate) struct Utils {}
 
+#[allow(dead_code)]
 #[godot_api]
 impl Utils {
     #[func]
