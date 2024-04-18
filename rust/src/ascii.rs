@@ -106,7 +106,6 @@ impl Ascii {
             //     continue;
             // }
             let char_img = &self.char_vec[i];
-            godot_print!("comparing with {}", c);
             let curr_score = Ascii::get_compare_score(chunk, char_img);
             if curr_score > top_score {
                 winning_char = c;
