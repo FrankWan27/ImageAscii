@@ -20,15 +20,16 @@ func _on_file_dialog_file_selected(path):
 	_load_image(path)
 
 func _on_files_dropped(files):
-	var path = files[0]	
+	var path = files[0]
 	_load_image(path)
 	
 func _load_image(path):
 	var image = Image.new()
 	image.load(path)
 	$UI/AsciiButton.set_pressed(false)
-	Utils.fit_image_to_size(image, $ColorRect.get_rect().size.x, $ColorRect.get_rect().size.y);
+	Utils.fit_image_to_size(image, $ColorRect.get_rect().size.x, $ColorRect.get_rect().size.y)
 	$ColorRect/ImageRect.set_image(image)
+	$ColorRect/ImageRect/RichTextLabel.clear()
 
 func _on_ascii_button_toggled(toggled_on):
 	if (toggled_on):
@@ -36,13 +37,15 @@ func _on_ascii_button_toggled(toggled_on):
 		$ColorRect/ImageRect.hide_texture()
 	else:
 		$ColorRect/ImageRect.reset_texture()
+		$ColorRect/ImageRect/RichTextLabel.clear()
 
 func set_font(font: Font, font_size: int):
 	$ColorRect/ImageRect.set_font(font, font_size)
 
 func _on_slider_drag_ended(value_changed):
-	set_font(preload(\"res://COUR.TTF\"), $UI/FontSize/Slider.value)
-	$UI/AsciiButton.set_pressed(false)
+	if(value_changed):
+		set_font(preload(\"res://COUR.TTF\"), $UI/FontSize/Slider.value)
+		$UI/AsciiButton.set_pressed(false)
 	
 "
 
@@ -195,7 +198,6 @@ text = "10"
 
 [connection signal="button_down" from="UI/LoadImage" to="." method="_on_load_image_button_down"]
 [connection signal="file_selected" from="UI/FileDialog" to="." method="_on_file_dialog_file_selected"]
-[connection signal="pressed" from="UI/AsciiButton" to="ColorRect/ImageRect/Ascii" method="_on_ascii_button_pressed"]
 [connection signal="toggled" from="UI/AsciiButton" to="." method="_on_ascii_button_toggled"]
 [connection signal="drag_ended" from="UI/FontSize/Slider" to="." method="_on_slider_drag_ended"]
 [connection signal="value_changed" from="UI/FontSize/Slider" to="UI/FontSize" method="_on_slider_value_changed"]
