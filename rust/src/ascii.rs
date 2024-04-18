@@ -1,11 +1,7 @@
-use godot::engine::control::GrowDirection;
-use godot::engine::{
-    viewport, Font, ILabel, Image, ImageTexture, Label, SubViewport, SubViewportContainer,
-};
+use godot::engine::{Font, ILabel, Image, Label, SubViewport, SubViewportContainer};
 use godot::prelude::*;
 
 use crate::draw::Draw;
-use crate::utils::Utils;
 
 pub const LOWEST_ASCII: char = ' ';
 pub const HIGHEST_ASCII: char = '~';
@@ -68,17 +64,6 @@ impl Ascii {
             .set_font(font, font_size);
 
         let size = self.draw.as_mut().unwrap().get_size();
-        godot_print!(
-            "calculated size {} calculated width {}",
-            Vector2::new(char_size.x * NUM_ASCII as f32, char_size.y),
-            char_size.x
-        );
-        godot_print!(
-            "actual size {} actual width {}",
-            size,
-            size.x / NUM_ASCII as f32
-        );
-
         self.viewport_container.as_mut().unwrap().set_size(size);
         self.viewport_container
             .as_mut()
@@ -110,7 +95,6 @@ impl Ascii {
             }
             output.push('\n');
         }
-        // self.base_mut().set_text(output.clone().into());
         output.into()
     }
 
@@ -118,7 +102,9 @@ impl Ascii {
         let mut winning_char = '?';
         let mut top_score = 0.0;
         for (i, c) in (LOWEST_ASCII..=HIGHEST_ASCII).enumerate() {
-            // for (i, c) in ('a'..='c').enumerate() {
+            // if c == '`' {
+            //     continue;
+            // }
             let char_img = &self.char_vec[i];
             godot_print!("comparing with {}", c);
             let curr_score = Ascii::get_compare_score(chunk, char_img);
@@ -136,8 +122,6 @@ impl Ascii {
 
         for y in 0..size.y {
             for x in 0..size.x {
-                // Utils::print_pixel(format!(" {},{}chunk", x, y), &chunk.get_pixel(x, y));
-                // Utils::print_pixel(format!(" {},{} char", x, y), &char_img.get_pixel(x, y));
                 score += Ascii::compare_pixel(&chunk.get_pixel(x, y), &char_img.get_pixel(x, y));
             }
         }
@@ -146,6 +130,8 @@ impl Ascii {
 
     fn compare_pixel(a: &Color, b: &Color) -> f32 {
         1.0 - (Ascii::color_magnitude(a) - Ascii::color_magnitude(b)).abs()
+        //uncomment for inverse colors
+        //(Ascii::color_magnitude(a) - Ascii::color_magnitude(b)).abs()
     }
 
     fn color_magnitude(c: &Color) -> f32 {
@@ -153,21 +139,16 @@ impl Ascii {
         let inverse = 1.0 - gray;
         let alpha = inverse * c.a;
         alpha
-        //(1.0 - (c.r + c.g + c.b) / 3.0) * c.a
     }
 
     pub fn populate_cache(&mut self) {
-        for (i, c) in (LOWEST_ASCII..=HIGHEST_ASCII).enumerate() {
+        for (i, _c) in (LOWEST_ASCII..=HIGHEST_ASCII).enumerate() {
             let char_image = self.capture_viewport().get_region(Rect2i::from_components(
                 self.get_char_size().x as i32 * i as i32,
                 0,
                 self.get_char_size().x as i32,
                 self.get_char_size().y as i32,
             ));
-            // char_image
-            //     .as_ref()
-            //     .unwrap()
-            //     .save_png(format!("res://ascii/char_{}.png", c).into());
             self.char_vec[i] = char_image.unwrap();
         }
     }

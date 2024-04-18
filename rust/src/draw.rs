@@ -1,6 +1,4 @@
-use godot::engine::global::HorizontalAlignment;
-use godot::engine::text_server::{Direction, JustificationFlag, Orientation};
-use godot::engine::{Control, Font, IControl, ILabel, Image, ImageTexture, Label};
+use godot::engine::{Font, IControl, Label};
 use godot::prelude::*;
 
 use crate::ascii::{HIGHEST_ASCII, LOWEST_ASCII};

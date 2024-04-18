@@ -1,10 +1,4 @@
-use godot::engine::global::HorizontalAlignment;
-use godot::engine::Font;
-use godot::engine::ISprite2D;
-use godot::engine::Image;
-use godot::engine::ImageTexture;
-use godot::engine::RichTextLabel;
-use godot::engine::Sprite2D;
+use godot::engine::{Font, ISprite2D, Image, ImageTexture, RichTextLabel, Sprite2D};
 use godot::prelude::*;
 
 use crate::ascii::Ascii;
@@ -54,7 +48,6 @@ impl ImageRect {
         let label = self.text_label.as_mut().unwrap();
         label.clear();
         label.push_color(Color::BLACK);
-        label.push_paragraph(HorizontalAlignment::CENTER);
         label.push_font_ex(font.clone()).font_size(font_size).done();
         self.ascii
             .as_mut()
@@ -78,16 +71,8 @@ impl ImageRect {
     fn convert_to_ascii(&mut self) {
         self.ascii.as_mut().unwrap().bind_mut().populate_cache();
         let image = self.base_mut().get_texture().unwrap().get_image().unwrap();
-        //let gray = Utils::to_gray_scale(image);
-        godot_print!("image size {}", image.get_size());
         let chunks =
             Utils::split_image(image, &self.ascii.as_ref().unwrap().bind().get_char_size());
-        godot_print!(
-            "split into {}x{} chunk size: {}",
-            chunks.len(),
-            chunks[0].len(),
-            chunks[0][0].get_size()
-        );
 
         let ascii_string = self
             .ascii
@@ -99,12 +84,16 @@ impl ImageRect {
         let label = self.text_label.as_mut().unwrap();
         label.append_text(ascii_string);
         label.pop_all();
-        godot_print!("{}", label.get_text());
     }
 
     #[func]
     fn reset_texture(&mut self) {
         let image = self.get_image();
         self.set_texture(image);
+    }
+
+    #[func]
+    fn hide_texture(&mut self) {
+        self.set_texture(Image::new_gd());
     }
 }

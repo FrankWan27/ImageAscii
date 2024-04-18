@@ -1,4 +1,4 @@
-use godot::engine::{Font, Image, Label};
+use godot::engine::Image;
 use godot::prelude::*;
 
 #[derive(GodotClass)]
