@@ -1,13 +1,5 @@
 # Image Ascii
 Image to Ascii Converter - this project was mainly to gain some familiarity with godot
-
-## Table of Contents
-- [Examples](#examples)
-- [Releases](https://github.com/FrankWan27/ImageAscii/releases/)
-- [Build](#build)
-
-## Examples
-![Bunny](https://github.com/FrankWan27/ImageAscii/blob/main/img/bunny.png?raw=true)
 ```
                                                                                                               
                                                ______                                                         
@@ -60,6 +52,22 @@ Image to Ascii Converter - this project was mainly to gain some familiarity with
                            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM""                            
                                     """MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM""""
 ```
+## Table of Contents
+- [Releases](https://github.com/FrankWan27/ImageAscii/releases/)
+- [Build](#build)
+- [Examples](#examples)
+
+## Build
+[Download the release and run (Windows only)](https://github.com/FrankWan27/ImageAscii/releases/)
+
+This project uses godot and godot-rust
+
+1. ```git clone https://github.com/FrankWan27/ImageAscii.git```
+2. Build rust/ folder using `cargo build`
+3. Open godot/ project in Godot and run using the editor.
+
+## Examples
+![Bunny](https://github.com/FrankWan27/ImageAscii/blob/main/img/bunny.png?raw=true)
 ![NkoPog](https://github.com/FrankWan27/ImageAscii/blob/main/img/nkoPog.png?raw=true)
 For white text on a dark background, you can generate the Ascii with invert toggled on:
 ![NkoPogInvert](https://github.com/FrankWan27/ImageAscii/blob/main/img/nkoPogInvert.png?raw=true)
@@ -115,11 +123,100 @@ MMMMMMMMMMMMMMMMMMMMMp___          """""WWMMMMMMMMMMMMMMMMMMMMMMMMWW"""""       
 MMMMMMMMMMMMMMMMMMMMMMMMMMpp,____                                            ___,qpMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMppq,,_____________         ______,,ppqqpMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 ```
-## Build
-[Download the release and run (Windows only)](https://github.com/FrankWan27/ImageAscii/releases/)
-
-This project uses godot and godot-rust
-
-1. ```git clone https://github.com/FrankWan27/ImageAscii.git```
-2. Build rust/ folder using `cargo build`
-3. Open godot/ project in Godot and run using the editor.
+```
+                                                                                     _qpqppw___            
+                                                             _________________,ggqqqMMMMMMMMMMMMpp__       
+                                   ____________ggggqqppqpMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMp_    
+     qpppppa,_______agqqqppMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMB    
+      "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM    
+          ^"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMW__                            ^""""""MMM""MM^     
+               "MMMMMMMMMMMMMMMMMMM"""           "MMMMMMMMMp_                                              
+                   "MMMMM"""^                      MMMMMMMMMMp                                             
+                                                  qMMMMMMMMMMM|                                            
+                                                 qMMMMMMMMMMM"                                             
+                                               _qMMMMMMMMM                                                 
+                                              yMMMMMMMMM]                                                  
+                                            _qMMMMMMMMMMMp___                                              
+                                           qMMMMMMMMMMMMMMMMMMMppw___                                      
+                                         _qMMMMMMMMM   "MMMMMMMMMMMMMMMMpwqqMMpp_                          
+                                        yMMMMMMMMM"       "MMMMMMMMMMMMMMMMMMMMMMWp_                       
+                                      _qMMMMMMMMM              ^""MMMMMMMMMMMMMMMMMMp_                     
+                                     yMMMMMMMMM                         ""MMMMMMMMMMMMp_                   
+                                   _qMMMMMMMMM                             qMMMMMMMMMMMM                   
+                                  yMMMMMMMMM"                              MMMMMMMMMMMMM                   
+                                _qMMMMMMMM"                               qMMMMMMMMMMM"                    
+                               yMMMMMMMMM                                 MMMMMMMMM#                       
+                             _MMMMMMMMM"                                 qMMMMMMMM#                        
+                           _qMMMMMMMM"                                   MMMMMMMMM                         
+                         _qMMMMMMMM"                                    qMMMMMMMM                          
+                       _qMMMMMMMM^                                      MMMMMMMMK                          
+                      qMMMMMMMM                                        qMMMMMMMK                           
+                   _qMMMMMMMM                                         qMMMMMMMM                            
+                 _qMMMMMMM"                                          _MMMMMMMM"                            
+               _qMMMMMMM"                                            #MMMMMMMK                             
+             _qMMMMMM"                                              #MMMMMMMM                              
+          _qMMMMMM"                                                qMMMMMMM#                               
+       __qMMMMM^                                                 _#MMMMMMMM                                
+      gMMMM"                                                    _MMMMMMMM#                                 
+                                                               qMMMMMMMMW                                  
+                                    MMp,_                    _qMMMMMMMMM                                   
+                                     "MMMMMp___            _qMMMMMMMMM#                                    
+                                       "MMMMMMMMMpp____  _qMMMMMMMMMMM                                     
+                                          MMMMMMMMMMMMMMMMMMMMMMMMMM                                       
+                                           "MMMMMMMMMMMMMMMMMMMMMM"                                        
+                                             MMMMMMMMMMMMMMMMMMM"                                          
+                                              MMMMMMMMMMMMMMMM#                                            
+                                              MMMMMMMMMMMMMMM                                              
+                                              |MMMMMMMMMMMM                                                
+                                               MMMMMMMMMM
+```
+```
+                                                                    __,,__                                         
+                                                                 __qMMMMMMp_                                       
+                                                       ___,wqpMMMMMMMMMMMMMMpw                                     
+                                _           _____,aqpMMMMMMMMMMMMMMMMMMMMMMMMMt                                    
+                                MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM                                      
+                                 "MMMMMMMMMMMMMMMMMMMMMMMMMMM""   MMMMMMMMM                                        
+                                    MMMMMMMMMMMMMMMMM"""          MMMMMMM#                                         
+                                        """"""                    MMMMMMM                                          
+                                                                  MMMMMM#                                          
+                                     ,,gp,_                      qMMMMMMh                                          
+                                     _MMMMMMp,_                  #MMMMMM                                           
+                                     JMMMMMMMMM                  MMMMMM#                                           
+                                      MMMMMMMMM                  MMMMMMb                                           
+                                      #MMMMMMMK                 qMMMMMM                                            
+                                      #MMMMMMM                  #MMMMM#                                            
+                                      MMMMMMM#                  MMMMMMh                                            
+                                      MMMMMMM                  qMMMMMM                                             
+                                      MMMMMM"                  #MMMMM#                                             
+                                     qMMMMM#                   MMMMMM                                              
+                                     #MMMMM                   qMMMMMW                                              
+                                     MMMMM#                   #MMMMMK                    _qpp                      
+                                    (MMMMMh                   MMMMMM_,awgqqppppppppppppppMMMMB_                    
+                                    #MMMMM             ___,aqpMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMp_                  
+                                    MMMMM#______,aqpMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMp,               
+                                   _MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM""MMMMMMMMMMMMMp              
+                                  qMMMMMMMMMMMMMMMMMMMMMMM""MM""""                      #MMMMMMMMMMMK              
+                                  MMMMMMMMMMMMMMMM""                                    MMMMMMMMMMM#               
+                                  "MMMMMMMMMM""                                        qMMMMMMMMMMM                
+                                    MMMMM"                                             (MMMMMMMMMM#                
+                                                                                       #MMMMMMMMMMK                
+                                           ______,,awggggggpgpwwa,,,_____              MMMMMMMMMMM                 
+                                  ___,gqpMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMpp__         qMMMMMMMMMMM                 
+                               _mMMMMWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMp        MMMMMMMMMMMW                 
+                   ,,,,,awqqpMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"       qMMMMMMMMMMM#                 
+            __wqqqppMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWMMM#         _MMMMMMMMMMMM)                 
+             MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM""                           #MMMMMMMMMMMM                  
+               #MMMMMMMMMMMMMMMMMMMMMMMMMMMMM""                                    qMMMMMMMMMMMMM                  
+                 ""MMMMMMMMMMMMMMMM"""                                            _MMMMMMMMMMMMM#                  
+                                                                                  #MMMMMMMMMMMMM                   
+                                                                     qw,___      qMMMMMMMMMMMMM"                   
+                                                                    wqMMMMMMpw_ yMMMMMMMMMMMMM"                    
+                                                                    wMMMMMMMMMMMMMMMMMMMMMMMM"                     
+                                                                     "MMMMMMMMMMMMMMMMMMMMMQ"                      
+                                                                       MMMMMMMMMMMMMMMMMM#                         
+                                                                        ^MMMMMMMMMMMMMMM"                          
+                                                                          MMMMMMMMMMMM#                            
+                                                                           WMMMMMMMMM"                             
+                                                                            MMMMMMW"                               
+```
